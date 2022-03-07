@@ -10,20 +10,8 @@ import { HelloResolver } from "./resolvers/hello";
 /*
  * MAIN FUNCTION
  * 
- * MikroORM is a TypeScript library that supports object relational mapping.
- * orm is an MikroORM instance.
- * 
- *  find(entityName, where, options?): Retrieves entries of specified entity with an options parameter. 
- * 
- *  create(entityName, data, options?): Creating an object of a specified entity. We can also create
- *  a class constructor and create the object that way.
- * 
- *  persistAndFlush(entity): Insert an object into the database.
- * 
- *  nativeInsert(entityName, data?, options?): A different method of insertion. The tutorial
- *  doesn't go into detail, but the difference between create + persistAndFlush is
- *  that nativeInsert doesn't form a class from the interaction whereas create uses the class
- *  to create the object.
+ * MikroORM is a TypeScript library that supports ORM (object relational mapping) for databases.
+ * In this case, the data we are utilizing is PostgreSQL.
  * 
  * Express is the server framework.
  * 
