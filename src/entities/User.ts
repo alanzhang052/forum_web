@@ -2,7 +2,7 @@ import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
 import { ObjectType, Field } from "type-graphql";
 
 /*
- * A basic class for posts on the database.
+ * A basic class for user information
  */
 
 @ObjectType()
@@ -12,17 +12,19 @@ export class Post {
     @PrimaryKey()
     id!: number;
 
-    // Why does em.create require this property instead of taking the default value?
     @Field(() => String)
     @Property({ type: "date" })
     createdAt = new Date();
 
-    // Why does em.create require this property instead of taking the default value?
     @Field(() => String)
     @Property({ type: "date", onUpdate: () => new Date() })
     updatedAt = new Date();
 
     @Field()
-    @Property({ type: "text" })
-    title!: string;
+    @Property({ type: "text", unique: true })
+    username!: string;
+
+    // Hash password
+    @Property({ type: "text", unique: true })
+    password!: string;
 }
