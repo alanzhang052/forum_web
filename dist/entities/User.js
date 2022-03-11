@@ -86,10 +86,7 @@ __decorate(
     void 0
 );
 __decorate(
-    [
-        (0, core_1.Property)({ type: "text", nullable: true }),
-        __metadata("design:type", String),
-    ],
+    [(0, core_1.Property)({ type: "text" }), __metadata("design:type", String)],
     User.prototype,
     "password",
     void 0

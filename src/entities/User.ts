@@ -14,17 +14,16 @@ export class User {
 
     @Field(() => String)
     @Property({ type: "date" })
-    createdAt = new Date();
+    createdAt? = new Date();
 
     @Field(() => String)
     @Property({ type: "date", onUpdate: () => new Date() })
-    updatedAt = new Date();
+    updatedAt? = new Date();
 
     @Field()
     @Property({ type: "text", unique: true })
     username!: string;
 
-    // Hash password
-    @Property({ type: "text", nullable: true })
+    @Property({ type: "text" })
     password!: string;
 }

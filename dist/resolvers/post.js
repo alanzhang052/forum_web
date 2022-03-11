@@ -55,8 +55,6 @@ let PostResolver = class PostResolver {
     }
     async createPost(title, { em }) {
         const post = em.create(Post_1.Post, {
-            createdAt: new Date(),
-            updatedAt: new Date(),
             title,
         });
         await em.persistAndFlush(post);

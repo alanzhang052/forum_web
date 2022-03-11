@@ -23,8 +23,6 @@ export class PostResolver {
         @Ctx() { em }: MyContext
     ): Promise<Post> {
         const post = em.create(Post, {
-            createdAt: new Date(),
-            updatedAt: new Date(),
             title,
         });
         await em.persistAndFlush(post);

@@ -12,15 +12,13 @@ export class Post {
     @PrimaryKey()
     id!: number;
 
-    // Why does em.create require this property instead of taking the default value?
     @Field(() => String)
     @Property({ type: "date" })
-    createdAt = new Date();
+    createdAt? = new Date();
 
-    // Why does em.create require this property instead of taking the default value?
     @Field(() => String)
     @Property({ type: "date", onUpdate: () => new Date() })
-    updatedAt = new Date();
+    updatedAt? = new Date();
 
     @Field()
     @Property({ type: "text" })
