@@ -1,2 +1,7 @@
 # Prerequisites
 node_modules
+.DS_Store
+
+dist
+.husky
+.prettierrc.json
