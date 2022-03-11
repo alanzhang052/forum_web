@@ -7,7 +7,7 @@ import { ObjectType, Field } from "type-graphql";
 
 @ObjectType()
 @Entity()
-export class Post {
+export class User {
     @Field()
     @PrimaryKey()
     id!: number;
@@ -25,6 +25,6 @@ export class Post {
     username!: string;
 
     // Hash password
-    @Property({ type: "text", unique: true })
+    @Property({ type: "text", nullable: true })
     password!: string;
 }
