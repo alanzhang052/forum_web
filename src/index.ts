@@ -8,6 +8,10 @@ import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
+import session from "express-session";
+import { createClient } from "redis";
+import connectRedis from "connect-redis";
+import { MyContext } from "./types";
 
 /*
  * MAIN FUNCTION
@@ -24,21 +28,53 @@ import { UserResolver } from "./resolvers/user";
  */
 
 const main = async () => {
+    // PostgreSQL Setup
     const orm = await MikroORM.init(microConfig);
     await orm.getMigrator().up();
 
+    // Express Setup
     const app = express();
 
+    // Redis Setup
+    // connectRedis is a deprecated function in library “@types/redis”.
+    // Uninstalling the library allowed connectRedis from library “connect-redis” to work properly.
+    const RedisStore = connectRedis(session);
+    const redisClient = createClient({ legacyMode: true });
+    redisClient.connect().catch(console.error);
+
+    // Customize redis middleware
+    app.use(
+        session({
+            name: "qid",
+            store: new RedisStore({
+                client: redisClient,
+                disableTouch: true,
+            }),
+            cookie: {
+                maxAge: 1000 * 60 * 60 * 24 * 365 * 1, // TTL of 1 year
+                httpOnly: true,
+                secure: __prod__, // Cookie will only work in https
+                sameSite: "lax",
+            },
+            saveUninitialized: false,
+            secret: "abcdefghijklmnopqrstuvwxyz",
+            resave: false,
+        })
+    );
+
+    // Customize apolloServer middleware
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [HelloResolver, PostResolver, UserResolver],
             validate: false,
         }),
-        context: () => ({ em: orm.em }),
+        context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
     });
 
+    // Apply middleware
     apolloServer.applyMiddleware({ app });
 
+    // Launch express app
     app.listen(3000, () => {
         console.log("Server started on http://localhost:3000/");
     });
